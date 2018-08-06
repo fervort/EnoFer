@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="com.fervort.enofer.commands.category">
+      </category>
+      <command
+            name="Sample Command"
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.sampleCommand">
+      </command>
+      <command
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.main.credentials"
+            name="Credentials">
+      </command>
+      <command
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.main.extractprogram"
+            name="Extract Program">
+      </command>
+      <command
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.main.importprogram"
+            name="Import Program">
+      </command>
+      <command
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.main.compileprogram"
+            name="Compile Program">
+      </command>
+      <command
+            categoryId="com.fervort.enofer.commands.category"
+            id="com.fervort.enofer.commands.main.about"
+            name="About Plugin">
+      </command>
+      <command
+            id="com.fervort.enofer.commands.extractprogramhere"
+            name="Extract Program Here">
+      </command>
+      <command
+            id="com.fervort.enofer.commands.importthisprogram"
+            name="Import this Program">
+      </command>
+      <command
+            id="com.fervort.enofer.commands.compilethisprogram"
+            name="Compile this Program">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="com.fervort.enofer.commands.sampleCommand"
+            class="com.fervort.enofer.handlers.SampleHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.fervort.enofer.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+1"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="EnoFer"
+               mnemonic="M"
+               id="EnoFer.menus.sampleMenu">
+            <command
+                  commandId="com.fervort.enofer.commands.sampleCommand"
+                  mnemonic="S"
+                  id="EnoFer.menus.sampleCommand">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.main.credentials"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.main.extractprogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.main.importprogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.main.compileprogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.main.about"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="EnoFer.toolbars.sampleToolbar">
+            <command
+                  commandId="com.fervort.enofer.commands.sampleCommand"
+                  icon="icons/sample.png"
+                  tooltip="Say hello world"
+                  id="EnoFer.toolbars.sampleCommand">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.fervort.enofer.preferences.EnoFerPreferences"
+            id="com.fervort.enofer.preferencepages.settings"
+            name="EnoFer Settings">
+      </page>
+   </extension>
+
+</plugin>

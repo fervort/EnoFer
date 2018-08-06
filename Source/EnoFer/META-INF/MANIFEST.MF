@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EnoFer
+Bundle-SymbolicName: com.fervort.enofer;singleton:=true
+Bundle-Version: 1.0.0.beta
+Bundle-Activator: com.fervort.enofer.Activator
+Bundle-Vendor: Nilesh Khaire
+Require-Bundle: org.eclipse.ui,
+  org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: EnoFer
+Bundle-ActivationPolicy: lazy
