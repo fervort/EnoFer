@@ -4,9 +4,12 @@ Bundle-Name: EnoFer
 Bundle-SymbolicName: com.fervort.enofer;singleton:=true
 Bundle-Version: 1.0.0.beta
 Bundle-Activator: com.fervort.enofer.Activator
-Bundle-Vendor: Nilesh Khaire
+Bundle-Vendor: fervort.com
 Require-Bundle: org.eclipse.ui,
-  org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.12.0",
+ org.eclipse.jdt.core;bundle-version="3.13.102"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Automatic-Module-Name: EnoFer
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.jface.text

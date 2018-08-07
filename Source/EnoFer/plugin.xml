@@ -39,14 +39,17 @@
             name="About Plugin">
       </command>
       <command
+            defaultHandler="com.fervort.enofer.handlers.ExtractProgramHereHandler"
             id="com.fervort.enofer.commands.extractprogramhere"
             name="Extract Program Here">
       </command>
       <command
+            defaultHandler="com.fervort.enofer.handlers.ImportThisProgramHandler"
             id="com.fervort.enofer.commands.importthisprogram"
             name="Import this Program">
       </command>
       <command
+            defaultHandler="com.fervort.enofer.handlers.CompileThisProgramHandler"
             id="com.fervort.enofer.commands.compilethisprogram"
             name="Compile this Program">
       </command>
@@ -113,6 +116,26 @@
                   id="EnoFer.toolbars.sampleCommand">
             </command>
          </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               icon="icons/EnoFerMenu.png"
+               label="Eno Fer">
+            <command
+                  commandId="com.fervort.enofer.commands.extractprogramhere"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.importthisprogram"
+                  style="push">           
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.compilethisprogram"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension
