@@ -1,6 +1,8 @@
 package com.fervort.enofer.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -28,7 +30,9 @@ public class EnoFerPreferences extends FieldEditorPreferencePage implements IWor
 		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.host", "Enovia Host:", getFieldEditorParent()));
 		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.username", "Enovia Username:", getFieldEditorParent()));
 		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.password", "Enovia Userpassword:", getFieldEditorParent()));
-		
+		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.vault", "Enovia Vault:", getFieldEditorParent()));
+		addField(new BooleanFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.enablelogs", "Enable Logs", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.logpath", "Log Path:", getFieldEditorParent()));
 		
 		
 	}

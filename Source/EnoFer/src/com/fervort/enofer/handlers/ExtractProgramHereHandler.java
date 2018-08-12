@@ -10,10 +10,14 @@ import org.eclipse.jface.text.IMarkSelection;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.fervort.enofer.dialogs.ExtractProgramDialog;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -22,6 +26,8 @@ public class ExtractProgramHereHandler extends AbstractHandler{
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		
+		Shell parent = HandlerUtil.getActiveShell(event).getShell();
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
         if( window != null )
@@ -42,8 +48,10 @@ public class ExtractProgramHereHandler extends AbstractHandler{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. This is project. Select Source Folder and then click this option.");
     				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragmentRoot)
     				{
-    					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+    					ExtractProgramDialog extractProgramDialog = new ExtractProgramDialog(parent);
+    					extractProgramDialog.setSourceFolderPath(selectedResource.getLocation().toOSString());
+    					extractProgramDialog.open();
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
     					
     				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragment)
@@ -87,6 +95,8 @@ public class ExtractProgramHereHandler extends AbstractHandler{
 		return null;
 	}
 	
+	
+
 	void extractProgram()
 	{
 		

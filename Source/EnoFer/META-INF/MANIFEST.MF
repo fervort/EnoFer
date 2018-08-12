@@ -13,3 +13,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Automatic-Module-Name: EnoFer
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jface.text
+Bundle-ClassPath: .,
+ lib/eMatrixServletRMI.jar
