@@ -22,8 +22,6 @@ public class EnoviaUtility {
 		String strResult = executeMQL("list program '"+strProgramName+"' ");
 		StringTokenizer stTokens = new StringTokenizer(strResult, "\n");
 		
-		
-
 		while (stTokens.hasMoreTokens()) {
 			String progDetails = stTokens.nextToken();
 				
@@ -37,6 +35,11 @@ public class EnoviaUtility {
 		String strEnoviaUsername= Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.username");
 		String strEnoviaPassword = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.password");
 		String strEnoviaVault = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.vault");
+		
+		Logger.write("strEnoviaHost "+strEnoviaHost);
+		Logger.write("strEnoviaHost "+strEnoviaUsername);
+		Logger.write("strEnoviaHost "+strEnoviaPassword);
+		Logger.write("strEnoviaHost "+strEnoviaVault);
 		
 		
 		context = new Context(strEnoviaHost);
@@ -57,8 +60,13 @@ public class EnoviaUtility {
 	{
 		if(context==null && mqlCommand==null)
 		{
+			Logger.write("Context is NULL. Lets create it !");
 			createEnoviaContext();
+		}else
+		{
+			Logger.write("Context is already created");
 		}
+		
 		Logger.write("MQL: "+strCommand);
 		strCommand = "escape " + strCommand;
 		if (!mqlCommand.executeCommand(context, strCommand))

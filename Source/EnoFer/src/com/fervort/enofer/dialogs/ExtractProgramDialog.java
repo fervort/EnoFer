@@ -56,8 +56,8 @@ public class ExtractProgramDialog extends Dialog{
 		
 		layout.marginLeft = 3;
 		layout.marginRight = 3;
-		layout.marginTop = 3;
-		layout.marginBottom = 3; 
+		layout.marginTop = 7;
+		layout.marginBottom = 7; 
 
 		GridData labelData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		lProgramToSelectLabel = new Label(composite, 1);
@@ -77,8 +77,7 @@ public class ExtractProgramDialog extends Dialog{
 		ltShowProgramsList.setLayoutData(data);
 
 		try {
-			
-			alPrograms = new ArrayList<String>();
+			//alPrograms = new ArrayList<String>();
 			
 			alPrograms = EnoviaUtility.getEnoviaPrograms("*");
 			Iterator<String> iter = alPrograms.listIterator();
@@ -89,13 +88,13 @@ public class ExtractProgramDialog extends Dialog{
 			
 		} catch (Exception ex) {
 			String message = ex.getMessage();
+			Logger.write("Exception "+message+" trace "+ex);
 			Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);
 			ErrorDialog.openError(getShell(),"Failed","Couldn't retrieve program from Enovia database", status);
 		}
 
 		tProgramToSelect.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				System.out.println("called modify ");
 				ltShowProgramsList.removeAll();
 				filterPrograms();
 			}
@@ -162,7 +161,19 @@ public class ExtractProgramDialog extends Dialog{
 	@Override
 	protected void okPressed() {
 		String[] selectedPrograms = this.ltShowProgramsList.getSelection();
-		super.okPressed();
+		for (int i = 0; i < selectedPrograms.length; i++) {
+			
+			try {
+				EnoviaUtility.executeMQL("extract program '"+selectedPrograms[i]+"' source '"+getSourceFolderPath()+"'");
+			} catch (Exception ex) {
+				
+				String message = ex.getMessage();
+				Logger.write("Exception "+message+" trace "+ex);
+				Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);
+				ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
+			}
+		}
+		//super.okPressed();
 	}
 	/*
     @Override

@@ -5,6 +5,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IMarkSelection;
@@ -15,6 +18,10 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.fervort.enofer.enovia.EnoviaUtility;
+import com.fervort.enofer.log.Logger;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -55,6 +62,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
+    					importProgram(selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -86,6 +94,19 @@ public class ImportThisProgramHandler extends AbstractHandler{
         }
 		
 		return null;
+	}
+	
+	void importProgram(String strFullPath)
+	{
+		try {
+			EnoviaUtility.executeMQL("import program "+strFullPath);
+		} catch (Exception ex) {
+			Logger.write("import program failed "+strFullPath);
+			String message = ex.getMessage();
+			Logger.write("Exception "+message+" trace "+ex);
+			Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);
+			//ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
+		}
 	}
 
 }
