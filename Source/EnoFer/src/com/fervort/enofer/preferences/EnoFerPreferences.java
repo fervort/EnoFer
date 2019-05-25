@@ -21,7 +21,7 @@ public class EnoFerPreferences extends FieldEditorPreferencePage implements IWor
 	public void init(IWorkbench workbench) {
 		
 		//setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, "com.fervort.enofer"));
-		setDescription("Set Host, Username and Password of Enovia \nDon't add https url , it is not supported in this release");
+		setDescription("Set Host, Username and Password of Enovia \nDon't add https url , it is not supported in this release \n'Remote Server JPO Directory' is used only in case Enovia server is installed on another machine.");
 	}
 
 	@Override
@@ -33,6 +33,7 @@ public class EnoFerPreferences extends FieldEditorPreferencePage implements IWor
 		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.vault", "Enovia Vault:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.enablelogs", "Enable Logs", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.logpath", "Log Path:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir", "Remote Server JPO Directory:", getFieldEditorParent()));
 		
 		
 	}

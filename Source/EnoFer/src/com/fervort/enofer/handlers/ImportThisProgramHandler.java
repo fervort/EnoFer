@@ -1,5 +1,7 @@
 package com.fervort.enofer.handlers;
 
+import java.io.File;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -19,6 +21,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.fervort.enofer.Activator;
 import com.fervort.enofer.enovia.EnoviaUtility;
 import com.fervort.enofer.log.Logger;
 
@@ -61,7 +64,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info", "This is file");
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
+    					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
     					importProgram(selectedResource.getLocation().toOSString());
     				}else
     				{
@@ -99,9 +102,19 @@ public class ImportThisProgramHandler extends AbstractHandler{
 	void importProgram(String strFullPath)
 	{
 		try {
-			EnoviaUtility.executeMQL("import program "+strFullPath);
+			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
+			if(strServerJPOPath.trim().length()!=0)
+			{
+				String strFileName = new File(strFullPath).getName();
+				strFullPath=strServerJPOPath+"/"+strFileName;
+			}
+			Logger.write("\n Insert full file path "+strFullPath);
+			
+			EnoviaUtility.executeMQL("insert program "+strFullPath);
+			Logger.write("\n File inserted ");
+			
 		} catch (Exception ex) {
-			Logger.write("import program failed "+strFullPath);
+			Logger.write("insert program failed "+strFullPath);
 			String message = ex.getMessage();
 			Logger.write("Exception "+message+" trace "+ex);
 			Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);

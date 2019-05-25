@@ -1,10 +1,14 @@
 package com.fervort.enofer.handlers;
 
+import java.io.File;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IMarkSelection;
@@ -15,6 +19,11 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.fervort.enofer.Activator;
+import com.fervort.enofer.enovia.EnoviaUtility;
+import com.fervort.enofer.log.Logger;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -54,7 +63,8 @@ public class CompileThisProgramHandler extends AbstractHandler{
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info", "This is file");
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
+    					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
+    					compileProgram(selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -87,5 +97,28 @@ public class CompileThisProgramHandler extends AbstractHandler{
 		
 		return null;
 	}
+	
+	void compileProgram(String strFullPath)
+	{
+		String strFileName = new File(strFullPath).getName();
+		String strJPOName = strFileName.replaceAll("_mxJPO.java", "");
+		
+		try {
+			
+			Logger.write("\n JPO Name "+strJPOName);
+			
+			EnoviaUtility.executeMQL("compile program '"+strJPOName+"' force update");
+			Logger.write("\n Program compiled ");
+			
+		} catch (Exception ex) {
+			Logger.write("compile program failed "+strFullPath+" JPO name "+strJPOName);
+			String message = ex.getMessage();
+			Logger.write("Exception "+message+" trace "+ex);
+			Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);
+			//ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
+		}
+	}
+	
+	
 
 }
