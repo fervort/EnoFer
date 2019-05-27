@@ -64,7 +64,7 @@ public class CompileThisProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
-    					compileProgram(selectedResource.getLocation().toOSString());
+    					compileProgram(window,selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -98,19 +98,21 @@ public class CompileThisProgramHandler extends AbstractHandler{
 		return null;
 	}
 	
-	void compileProgram(String strFullPath)
+	void compileProgram(IWorkbenchWindow window,String strFullPath)
 	{
 		String strFileName = new File(strFullPath).getName();
 		String strJPOName = strFileName.replaceAll("_mxJPO.java", "");
 		
 		try {
 			
-			Logger.write("\n JPO Name "+strJPOName);
+			Logger.write("JPO Name "+strJPOName);
 			
 			EnoviaUtility.executeMQL("compile program '"+strJPOName+"' force update");
-			Logger.write("\n Program compiled ");
+			Logger.write("Program compiled ");
+			MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Program compiled sucessfully !");
 			
 		} catch (Exception ex) {
+			MessageDialog.openError(window.getShell(), "EnoFer Error", ""+ex);
 			Logger.write("compile program failed "+strFullPath+" JPO name "+strJPOName);
 			String message = ex.getMessage();
 			Logger.write("Exception "+message+" trace "+ex);

@@ -65,7 +65,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
-    					importProgram(selectedResource.getLocation().toOSString());
+    					importProgram(window,selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -99,7 +99,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
 		return null;
 	}
 	
-	void importProgram(String strFullPath)
+	void importProgram(IWorkbenchWindow window,String strFullPath)
 	{
 		try {
 			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
@@ -108,12 +108,14 @@ public class ImportThisProgramHandler extends AbstractHandler{
 				String strFileName = new File(strFullPath).getName();
 				strFullPath=strServerJPOPath+"/"+strFileName;
 			}
-			Logger.write("\n Insert full file path "+strFullPath);
+			Logger.write("Insert full file path "+strFullPath);
 			
 			EnoviaUtility.executeMQL("insert program "+strFullPath);
-			Logger.write("\n File inserted ");
+			Logger.write("File inserted ");
+			MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Program inserted sucessfully !");
 			
 		} catch (Exception ex) {
+			MessageDialog.openError(window.getShell(), "EnoFer Error", "Failed "+ex);
 			Logger.write("insert program failed "+strFullPath);
 			String message = ex.getMessage();
 			Logger.write("Exception "+message+" trace "+ex);
