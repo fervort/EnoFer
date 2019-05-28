@@ -58,7 +58,7 @@ public class EnoviaUtility {
 
 	public static String executeMQL(String strCommand) throws Exception
 	{
-		if(context==null || mqlCommand==null)
+		if(context==null && mqlCommand==null)
 		{
 			Logger.write("Context is NULL. Lets create it !");
 			createEnoviaContext();

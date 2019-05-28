@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.Status;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -165,7 +165,6 @@ public class ExtractProgramDialog extends Dialog{
 			
 			try {
 				EnoviaUtility.executeMQL("extract program '"+selectedPrograms[i]+"' source '"+getSourceFolderPath()+"'");
-				MessageDialog.openInformation(getShell(), "EnoFer Info", "Program extracted sucessfully !");
 			} catch (Exception ex) {
 				
 				String message = ex.getMessage();
