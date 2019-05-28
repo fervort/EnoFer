@@ -52,7 +52,7 @@ public class ExtractProgramHereHandler extends AbstractHandler{
     					ExtractProgramDialog extractProgramDialog = new ExtractProgramDialog(parent);
     					extractProgramDialog.setSourceFolderPath(selectedResource.getLocation().toOSString());
     					extractProgramDialog.open();
-    					MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
+    					//MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file"+selectedResource.getLocation());
     					
     				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragment)
     				{

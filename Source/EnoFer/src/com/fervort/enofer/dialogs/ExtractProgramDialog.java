@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.Status;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
-
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.fervort.enofer.Activator;
 import com.fervort.enofer.enovia.EnoviaUtility;
 import com.fervort.enofer.log.Logger;
 
@@ -46,7 +47,15 @@ public class ExtractProgramDialog extends Dialog{
 	}
 
 	public void setSourceFolderPath(String strSourceFolderPath) {
-		this.strSourceFolderPath = strSourceFolderPath;
+		
+		String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
+		if(strServerJPOPath.trim().length()!=0)
+		{
+			this.strSourceFolderPath = strServerJPOPath;
+		}else
+		{
+			this.strSourceFolderPath = strSourceFolderPath;	
+		}
 	}
 
 	protected Control createDialogArea(Composite parent) {
@@ -165,6 +174,7 @@ public class ExtractProgramDialog extends Dialog{
 			
 			try {
 				EnoviaUtility.executeMQL("extract program '"+selectedPrograms[i]+"' source '"+getSourceFolderPath()+"'");
+				MessageDialog.openInformation(getShell(), "EnoFer Info", "Program extracted sucessfully !");
 			} catch (Exception ex) {
 				
 				String message = ex.getMessage();
@@ -173,7 +183,7 @@ public class ExtractProgramDialog extends Dialog{
 				ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
 			}
 		}
-		//super.okPressed();
+		super.okPressed();
 	}
 	/*
     @Override

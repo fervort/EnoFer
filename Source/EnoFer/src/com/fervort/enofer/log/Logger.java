@@ -19,7 +19,7 @@ public class Logger {
 				if((new File(strPath)).isDirectory())
 				{
 						PrintWriter pw = new PrintWriter(new FileWriter(strPath+"\\EnoFerPlugin.log",true));
-						pw.write(strLog);
+						pw.write("\n"+strLog);
 						pw.close();
 				}else
 				{

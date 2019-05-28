@@ -16,16 +16,19 @@ public class EnoviaUtility {
 	static MQLCommand mqlCommand = null;
 	
 	
-	public static ArrayList getEnoviaPrograms(String strProgramName) throws Exception
+	public static ArrayList<String> getEnoviaPrograms(String strProgramName) throws Exception
 	{
-		ArrayList alPrograms = new ArrayList<String>();
-		String strResult = executeMQL("list program '"+strProgramName+"' ");
+		ArrayList<String> alPrograms = new ArrayList<String>();
+		String strResult = executeMQL("list program '"+strProgramName+"' select isjavaprogram name dump |");
 		StringTokenizer stTokens = new StringTokenizer(strResult, "\n");
 		
 		while (stTokens.hasMoreTokens()) {
+			
 			String progDetails = stTokens.nextToken();
-				
-				alPrograms.add(progDetails);
+			String[] aProgDetails = progDetails.split("\\|");
+			
+			if(aProgDetails[0].trim().equals("TRUE"))
+				alPrograms.add(aProgDetails[1].trim());
 		}
 		return alPrograms;
 	}
@@ -58,7 +61,7 @@ public class EnoviaUtility {
 
 	public static String executeMQL(String strCommand) throws Exception
 	{
-		if(context==null && mqlCommand==null)
+		if(context==null || mqlCommand==null)
 		{
 			Logger.write("Context is NULL. Lets create it !");
 			createEnoviaContext();
