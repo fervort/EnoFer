@@ -5,18 +5,13 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            name="Sample Category"
+            name="EnoFer Category"
             id="com.fervort.enofer.commands.category">
       </category>
       <command
-            name="Sample Command"
             categoryId="com.fervort.enofer.commands.category"
-            id="com.fervort.enofer.commands.sampleCommand">
-      </command>
-      <command
-            categoryId="com.fervort.enofer.commands.category"
-            id="com.fervort.enofer.commands.main.credentials"
-            name="Credentials">
+            id="com.fervort.enofer.commands.main.connectiondetails"
+            name="Connection Details">
       </command>
       <command
             categoryId="com.fervort.enofer.commands.category"
@@ -53,12 +48,21 @@
             id="com.fervort.enofer.commands.compilethisprogram"
             name="Compile this Program">
       </command>
+      <command
+            defaultHandler="com.fervort.enofer.handlers.ImportAndCompilerProgramHandler"
+            id="com.fervort.enofer.commands.insertandcompileprogram"
+            name="Insert and Compile this Program">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="com.fervort.enofer.commands.sampleCommand"
-            class="com.fervort.enofer.handlers.SampleHandler">
+            commandId="com.fervort.enofer.commands.main.about"
+            class="com.fervort.enofer.handlers.AboutHandler">
+      </handler>
+      <handler
+            class="com.fervort.enofer.handlers.ConnectionDetails"
+            commandId="com.fervort.enofer.commands.main.connectiondetails">
       </handler>
    </extension>
    <extension
@@ -76,17 +80,7 @@
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
                label="EnoFer"
-               mnemonic="M"
-               id="EnoFer.menus.sampleMenu">
-            <command
-                  commandId="com.fervort.enofer.commands.sampleCommand"
-                  mnemonic="S"
-                  id="EnoFer.menus.sampleCommand">
-            </command>
-            <command
-                  commandId="com.fervort.enofer.commands.main.credentials"
-                  style="push">
-            </command>
+               id="EnoFer.menus.EnoFerMenu">
             <command
                   commandId="com.fervort.enofer.commands.main.extractprogram"
                   style="push">
@@ -100,6 +94,10 @@
                   style="push">
             </command>
             <command
+                  commandId="com.fervort.enofer.commands.main.connectiondetails"
+                  style="push">
+            </command>
+            <command
                   commandId="com.fervort.enofer.commands.main.about"
                   style="push">
             </command>
@@ -110,10 +108,10 @@
          <toolbar
                id="EnoFer.toolbars.sampleToolbar">
             <command
-                  commandId="com.fervort.enofer.commands.sampleCommand"
-                  icon="icons/sample.png"
-                  tooltip="Say hello world"
-                  id="EnoFer.toolbars.sampleCommand">
+                  commandId="com.fervort.enofer.commands.main.connectiondetails"
+                  icon="icons/EnoFerMenu.png"
+                  tooltip="Enovia Connection Details"
+                  id="EnoFer.toolbars.connectiondetails">
             </command>
          </toolbar>
       </menuContribution>
@@ -133,6 +131,10 @@
             </command>
             <command
                   commandId="com.fervort.enofer.commands.compilethisprogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.insertandcompileprogram"
                   style="push">
             </command>
          </menu>
