@@ -34,6 +34,8 @@ Go to Eclipse menu : `Windows -> Prefernces -> EnoFer Settings` . Fill the setti
 ## How to Use:
 EnoFer plugin provides basic features like insert program, compile program, extract program etc 
 
+![](Docs/images/enofer-right-click.png)
+
 ### Extract Program
 Create a Java project in Eclipse and right-click on `src` folder. Go to `EnoFer -> Extract Program Here` . Select the Program and click okay. Programs will be exported in `src` folder. Right click on `src` folder and click `Refresh` or press F5 .
 
