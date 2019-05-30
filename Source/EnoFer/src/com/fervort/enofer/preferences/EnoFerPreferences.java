@@ -21,7 +21,7 @@ public class EnoFerPreferences extends FieldEditorPreferencePage implements IWor
 	public void init(IWorkbench workbench) {
 		
 		//setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, "com.fervort.enofer"));
-		setDescription("Set Host, Username and Password of Enovia \nDon't add https URL, it is not supported in this release \n'Remote Server JPO Directory' is used in case Enovia server is not installed on same machine where eclipse is running.");
+		setDescription("Set Host, Username and Password of Enovia \nDon't add https URL, it is not supported in this release. \n'Remote Server JPO Directory' is used in case Enovia server is not installed on same machine where eclipse is running.");
 	}
 
 	@Override
