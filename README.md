@@ -16,3 +16,39 @@ Steps :
   - Copy updated JAR `com.fervort.enofer_X.X.X.X.jar` into your Eclipse plugin folder . 
   
   - Restart Eclipse.
+
+## EnoFer Settings:
+
+After restarting eclipse, you will see new Menu EnoFer is added in the main menubar. 
+
+
+![](Docs/images/enofer-menu.png)
+
+
+Go to Eclipse menu : `Windows -> Prefernces -> EnoFer Settings` . Fill the settings :
+
+
+![](Docs/images/enofer-settings.png)
+
+
+## How to Use:
+EnoFer plugin provides basic features like insert program, compile program, extract program etc 
+
+### Extract Program
+Create a Java project in Eclipse and right-click on `src` folder. Go to `EnoFer -> Extract Program Here` . Select the Program and click okay. Programs will be exported in `src` folder. Right click on `src` folder and click `Refresh` or press F5 .
+
+### Insert Program
+Right-click on program and Go to `EnoFer -> Import this Program` . 
+
+### Compile Program
+Right-click on program and Go to `EnoFer -> Compile this Program` . 
+
+
+## Known Issues:
+- [ ] EnoFer menu is available on all right click
+- [ ] Password is visible from settings.
+- [ ] Unknown issues :wink:  
+
+## Bugs, Issues, Help ?
+Feel free to create an `issue` on GitHub.
+    
