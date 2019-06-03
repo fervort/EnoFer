@@ -71,7 +71,7 @@ public class EnoviaUtility {
 		}
 		
 		Logger.write("MQL: "+strCommand);
-		strCommand = "escape " + strCommand;
+		//strCommand = "escape " + strCommand;
 		if (!mqlCommand.executeCommand(context, strCommand))
 			throw new Exception("MQL Exception: " + mqlCommand.getError() + "\n" + strCommand);
 		return mqlCommand.getResult();
