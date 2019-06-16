@@ -3,7 +3,7 @@ Eclipse Plugin for Enovia / 3DEXPERIENCE Platform
 
 ## Download latest version
 
-[Download Link](https://github.com/fervort/EnoFer/releases/download/v2.0.0.beta/Enofer_1.0.0.beta_binary.zip)
+[Download Link](https://github.com/fervort/EnoFer/releases/download/v2.0.0.beta2/Enofer_2.0.0.beta_binary.zip)
 
 ## How to build & deploy the JAR
 After downloading the plugin, you have to update `com.fervort.enofer_X.X.X.X.jar` file with the latest version of `eMatrixServletRMI.jar`
