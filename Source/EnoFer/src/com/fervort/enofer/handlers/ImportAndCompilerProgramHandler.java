@@ -17,6 +17,10 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -65,7 +69,7 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
-    					importAndCompileProgram(window,selectedResource.getLocation().toOSString());
+    					importAndCompileProgram(window,obFirstSelection,selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -99,10 +103,17 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
 		return null;
 	}
 	
-	void importAndCompileProgram(IWorkbenchWindow window,String strFullPath)
+	void importAndCompileProgram(IWorkbenchWindow window,Object obFirstSelection,String strFullPath) 
 	{
+		
+		// TODO Implement this feature
+		// throws JavaModelException
+		// String strSouceFolderName = CommonHandlerUtilities.getSourceFolderName(obFirstSelection);
 		try {
 			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
+			
+			//strFullPath
+			
 			if(strServerJPOPath.trim().length()!=0)
 			{
 				String strFileName = new File(strFullPath).getName();
@@ -132,5 +143,6 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
 			//ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
 		}
 	}
-
+	
+	
 }
