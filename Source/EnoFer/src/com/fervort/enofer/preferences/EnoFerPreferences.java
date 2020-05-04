@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
+
 import org.eclipse.swt.widgets.Composite;
 
 public class EnoFerPreferences extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
@@ -43,6 +44,7 @@ public class EnoFerPreferences extends FieldEditorPreferencePage implements IWor
 		addField(new BooleanFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.enablelogs", "Enable Logs", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.logpath", "Log Path:", getFieldEditorParent()));
 		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir", "Remote Server JPO Directory:", getFieldEditorParent()));
+		addField(new StringFieldEditor("com.fervort.enofer.preferencesstore.settings.enovia.mycommand", "My Command:", getFieldEditorParent()));
 		
 		
 	}

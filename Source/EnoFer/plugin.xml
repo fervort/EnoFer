@@ -53,6 +53,11 @@
             id="com.fervort.enofer.commands.insertandcompileprogram"
             name="Insert and Compile this Program">
       </command>
+      <command
+            defaultHandler="com.fervort.enofer.handlers.MyCommandHandler"
+            id="com.fervort.enofer.commands.mycommandhandler"
+            name="Execute My Command">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -137,6 +142,10 @@
             </command>
             <command
                   commandId="com.fervort.enofer.commands.insertandcompileprogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.fervort.enofer.commands.mycommandhandler"
                   style="push">
             </command>
          </menu>

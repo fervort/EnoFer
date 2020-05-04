@@ -40,19 +40,33 @@ public class EnoviaUtility {
 		String strEnoviaVault = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.vault");
 		
 		Logger.write("strEnoviaHost "+strEnoviaHost);
-		Logger.write("strEnoviaHost "+strEnoviaUsername);
-		Logger.write("strEnoviaHost "+strEnoviaPassword);
-		Logger.write("strEnoviaHost "+strEnoviaVault);
+		Logger.write("strEnoviaUsername "+strEnoviaUsername);
+		Logger.write("strEnoviaPassword "+strEnoviaPassword);
+		Logger.write("strEnoviaVault "+strEnoviaVault);
 		
 		
 		context = new Context(strEnoviaHost);
 
 		context.setUser(strEnoviaUsername);
-		context.setPassword(strEnoviaPassword);
+		
+		if(strEnoviaPassword.trim().equalsIgnoreCase("NULL"))
+		{
+			Logger.write("Accepted null password from user : "+strEnoviaPassword);
+			
+		}else
+		{
+			context.setPassword(strEnoviaPassword);
+		}
+		
 		context.setVault(strEnoviaVault);
 		context.connect();
 		if (!context.isConnected())
+		{
+			Logger.write("Failed to connect to Enovia  : "+strEnoviaHost);
+			
 			throw new Exception("Failed to connect to Enovia : " + strEnoviaHost);
+		}
+		
 		Logger.write("Connected to Enovia : "+strEnoviaHost);
 		
 		mqlCommand = new MQLCommand();
