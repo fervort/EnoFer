@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -149,13 +151,13 @@ public class MyCommandHandler extends AbstractHandler{
 			{
 				MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong command passed in setting 'My Command'. Command should start with file: or java: "
 				+"\n For example: file:D:\\MyFolder\\MyCustomCommand.exe"
-				+ "or java:com.fervort.commands.MyClass:MyMethod"		
+				+ "\n or java:com.fervort.commands.MyClass:MyMethod"		
 				+strSelectionType+" === "+strSelectionResoruce);	
 			}
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Exception "+ex);
+			Logger.write("Exception in callCommand() "+ex);
 		}
 	}
 	
@@ -184,39 +186,81 @@ public class MyCommandHandler extends AbstractHandler{
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Exception in callExecutable() "+e);
+			Logger.write("Exception in callExecutable() "+e);
 		}
 	}
 	
+	/**
+	 * 
+	 * You can also pass directory name where your justom class/jar is located.
+	 * 
+	 * Let's say your class is com.fervort.sample.Main and present in jar Sample.jar which is present in path c:\work\data
+	 * 
+	 * then you have to extract your JAR and put class in the path c:\work\data\com\fervort\sample\Main.class
+	 * 
+	 * Syntax to call will be: 
+	 * 
+	 * java:{c:\work\data}:com.fervort.sample.Main:myMethod
+	 * 
+	 * @param window
+	 * @param strSelectionType
+	 * @param strSelectionResoruce
+	 * @param strMyCommand
+	 */
 	void callJavaMethod(IWorkbenchWindow window ,String strSelectionType,String strSelectionResoruce, String strMyCommand)
 	{
+		
 		String[] aCommand = strMyCommand.split("\\|");
-		String strJavaPackageClass = aCommand[0];
+		String strJavaDirClassMethod = aCommand[0];
 		
 		String strExtraInfo = aCommand.length >=2 ? aCommand[1]:"";
 		
 		try {
-			String[] aJavaPackageClass = strJavaPackageClass.split(":");
-			if(aJavaPackageClass.length==2)
+			
+			String strClassDirName = null;
+			if(strJavaDirClassMethod.contains("{") && strJavaDirClassMethod.contains("}"))
 			{
-				Class clazz = Class.forName(aJavaPackageClass[0]);
+				// TODO improve this logic
+				strClassDirName = strJavaDirClassMethod.substring(strJavaDirClassMethod.indexOf("{") + 1, strJavaDirClassMethod.indexOf("}"));
+				// Remove everything between curly braces and curly braces as well
+				strJavaDirClassMethod = strJavaDirClassMethod.replaceAll("\\{.*?\\}:", "");
 				
-		        Method method=clazz.getDeclaredMethod(aJavaPackageClass[1],String.class,String.class,String.class);
+			}
+			
+			String[] aJavaPackageClassMethod = strJavaDirClassMethod.split(":");
+			if(aJavaPackageClassMethod.length==2)
+			{
+				Class clazz = null;
+				
+				if(strClassDirName==null)
+				{
+					clazz = Class.forName(aJavaPackageClassMethod[0]);
+				}
+				else
+				{
+					File dir = new File(strClassDirName);
+					URL[] cp = {dir.toURI().toURL()}; // construct URL from URI
+					URLClassLoader urlCl = new URLClassLoader(cp);
+					clazz = urlCl.loadClass(aJavaPackageClassMethod[0]);
+				}
+				
+		        Method method=clazz.getDeclaredMethod(aJavaPackageClassMethod[1],String.class,String.class,String.class);
 		        Object oClassInstance = clazz.newInstance();
 		        Object oReturn= method.invoke(oClassInstance,strSelectionType,strSelectionResoruce,strExtraInfo);
 		        
 		        MessageDialog.openInformation(window.getShell(), "EnoFer Info", oReturn.toString());
 		        
-			}else
+			}
+			else
 			{
-				System.out.println("Java class name package name syntax is wrong. It should be java:full_class_name:methodname . There should be three parameters to method");
+				Logger.write("Java class name package name syntax is wrong. It should be java:full_class_name:methodname or java:{dir_path}:full_class_name:methodname . There should be three parameters to method");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Exception in callExecutable() "+e);
+			System.out.println("Exception in callJavaMethod() "+e);
+			Logger.write("Exception in callJavaMethod() "+e);
 		}
-
-		
 	}
 
 }
