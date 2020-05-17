@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Iterator;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -55,63 +56,75 @@ public class MyCommandHandler extends AbstractHandler{
              
             if (selection instanceof IStructuredSelection) {
     			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-    			if(structuredSelection.size()!=1)
+    			
+    			Iterator iterator = structuredSelection.iterator();
+    			
+    			StringBuilder sbSelectionType = new StringBuilder();
+    			
+    			StringBuilder sbSelectionResoruce = new StringBuilder();
+    			
+    			while(iterator.hasNext())
     			{
-    				MessageDialog.openError(window.getShell(),"EnoFer Error","Wrong Selection. You have selected "+structuredSelection.size()+" Componenets. Please select only one component at a time.");
-    			}else
-    			{
-    				// TODO Implement in future to provide file, if multiples are selected 
-    				Object obFirstSelection = structuredSelection.getFirstElement();
-    				if(obFirstSelection instanceof org.eclipse.jdt.core.IJavaProject)
-    				{
-    					strSelectionType = "PROJECT";
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    					
-    				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragmentRoot)
-    				{
-    					strSelectionType = "SOURCE_FOLDER";
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    					
-    				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragment)
-    				{
-    					strSelectionType = "PACKAGE";
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    				}
-    				else if(obFirstSelection instanceof org.eclipse.jdt.core.ICompilationUnit)
-    				{
-    					strSelectionType = "COMPILATION_UNIT";
-    					
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    					//importProgram(window,selectedResource.getLocation().toOSString());
-    					
-    				}else if(obFirstSelection instanceof org.eclipse.core.internal.resources.File)
-    				{
-    					strSelectionType = "RESOURCE_FILE";
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    				}else if(obFirstSelection instanceof org.eclipse.core.internal.resources.Folder)
-    				{
-    					strSelectionType = "RESOURCE_FOLDER";
-    					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
-    					strSelectionResoruce = selectedResource.getLocation().toOSString();
-    					
-    				}
-    				else
-    				{
-    					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Selected uncategories class .\n"+obFirstSelection +" class "+obFirstSelection.getClass());
-    					System.out.print("Found uncategories class to cast: "+obFirstSelection.getClass());
-    					System.out.print(obFirstSelection.getClass());	
-    					// org.eclipse.core.internal.resources.File
-    					 // folder org.eclipse.core.internal.resources.File
-    					
-    				}
     				
-    			}
+    					Object objSelection = iterator.next();
+    					
+        				Object obFirstSelection = objSelection ; //structuredSelection.getFirstElement();
+        				
+        				if(obFirstSelection instanceof org.eclipse.jdt.core.IJavaProject)
+        				{
+        					strSelectionType = "PROJECT";
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        					
+        				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragmentRoot)
+        				{
+        					strSelectionType = "SOURCE_FOLDER";
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        					
+        				}else if(obFirstSelection instanceof org.eclipse.jdt.core.IPackageFragment)
+        				{
+        					strSelectionType = "PACKAGE";
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        				}
+        				else if(obFirstSelection instanceof org.eclipse.jdt.core.ICompilationUnit)
+        				{
+        					strSelectionType = "COMPILATION_UNIT";
+        					
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        					//importProgram(window,selectedResource.getLocation().toOSString());
+        					
+        				}else if(obFirstSelection instanceof org.eclipse.core.internal.resources.File)
+        				{
+        					strSelectionType = "RESOURCE_FILE";
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        				}else if(obFirstSelection instanceof org.eclipse.core.internal.resources.Folder)
+        				{
+        					strSelectionType = "RESOURCE_FOLDER";
+        					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
+        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        					
+        				}
+        				else
+        				{
+        					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Selected uncategories class .\n"+obFirstSelection +" class "+obFirstSelection.getClass());
+        					System.out.print("Found uncategories class to cast: "+obFirstSelection.getClass());
+        					System.out.print(obFirstSelection.getClass());	
+        					// org.eclipse.core.internal.resources.File
+        					 // folder org.eclipse.core.internal.resources.File
+        					
+        				}
+        				
+        				sbSelectionType.append(strSelectionType).append("|");
+        				sbSelectionResoruce.append(strSelectionResoruce).append("|");
+    			} // while end
+    			
+    			strSelectionType = sbSelectionType.toString();
+    			strSelectionResoruce = sbSelectionResoruce.toString();
     			
     		}
     		if (selection instanceof ITextSelection) {
