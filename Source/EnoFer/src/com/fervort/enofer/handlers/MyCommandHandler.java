@@ -261,7 +261,10 @@ public class MyCommandHandler extends AbstractHandler{
 		        Object oClassInstance = clazz.newInstance();
 		        Object oReturn= method.invoke(oClassInstance,strSelectionType,strSelectionResoruce,strExtraInfo);
 		        
-		        MessageDialog.openInformation(window.getShell(), "EnoFer Info", oReturn.toString());
+				if(!oReturn.toString().trim().equals("!ENOFER_NO_MD!"))
+				{
+					MessageDialog.openInformation(window.getShell(), "EnoFer Info", oReturn.toString());
+				}
 		        
 			}
 			else
