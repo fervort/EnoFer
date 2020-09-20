@@ -27,6 +27,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -94,7 +95,17 @@ public class MyCommandHandler extends AbstractHandler{
         					
         					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
         					
-        					strSelectionResoruce = selectedResource.getLocation().toOSString();
+        					// Get source folder name if it is compilation unit.
+        					String strSourceFolderName ="";
+        					try {
+								strSourceFolderName = CommonHandlerUtilities.getSourceFolderName(obFirstSelection);
+							} catch (JavaModelException e) {
+								
+								e.printStackTrace();
+								Logger.write("Exception in COMPILATION_UNIT getSourceFolderName "+e);
+							}
+        					
+        					strSelectionResoruce = strSourceFolderName+"?"+selectedResource.getLocation().toOSString();
         					//importProgram(window,selectedResource.getLocation().toOSString());
         					
         				}else if(obFirstSelection instanceof org.eclipse.core.internal.resources.File)

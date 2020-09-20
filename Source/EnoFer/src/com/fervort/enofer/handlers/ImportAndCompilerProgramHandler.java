@@ -106,18 +106,20 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
 	void importAndCompileProgram(IWorkbenchWindow window,Object obFirstSelection,String strFullPath) 
 	{
 		
-		// TODO Implement this feature
-		// throws JavaModelException
-		// String strSouceFolderName = CommonHandlerUtilities.getSourceFolderName(obFirstSelection);
 		try {
-			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
 			
-			//strFullPath
+			
+			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
 			
 			if(strServerJPOPath.trim().length()!=0)
 			{
-				String strFileName = new File(strFullPath).getName();
-				strFullPath=strServerJPOPath+"/"+strFileName;
+				String strSouceFolderName = CommonHandlerUtilities.getSourceFolderName(obFirstSelection);
+				Logger.write("Source folder name is: "+strSouceFolderName);
+				String strFilePathFromPackage = CommonHandlerUtilities.getFilePathFromPackage(strFullPath, strSouceFolderName); 
+				Logger.write("File path "+strFilePathFromPackage);
+				
+				//String strFileName = new File(strFullPath).getName();
+				strFullPath=strServerJPOPath+strFilePathFromPackage;
 			}
 			Logger.write("Insert full file path "+strFullPath);
 			

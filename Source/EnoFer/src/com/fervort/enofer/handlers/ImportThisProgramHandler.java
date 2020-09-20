@@ -65,7 +65,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
-    					importProgram(window,selectedResource.getLocation().toOSString());
+    					importProgram(window,obFirstSelection,selectedResource.getLocation().toOSString());
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -99,14 +99,19 @@ public class ImportThisProgramHandler extends AbstractHandler{
 		return null;
 	}
 	
-	void importProgram(IWorkbenchWindow window,String strFullPath)
+	void importProgram(IWorkbenchWindow window,Object obFirstSelection,String strFullPath)
 	{
 		try {
 			String strServerJPOPath = Activator.getDefault().getPreferenceStore().getString("com.fervort.enofer.preferencesstore.settings.enovia.serverjpodir");
 			if(strServerJPOPath.trim().length()!=0)
 			{
-				String strFileName = new File(strFullPath).getName();
-				strFullPath=strServerJPOPath+"/"+strFileName;
+				String strSouceFolderName = CommonHandlerUtilities.getSourceFolderName(obFirstSelection);
+				Logger.write("Source folder name is: "+strSouceFolderName);
+				String strFilePathFromPackage = CommonHandlerUtilities.getFilePathFromPackage(strFullPath, strSouceFolderName); 
+				Logger.write("File path "+strFilePathFromPackage);
+				
+				//String strFileName = new File(strFullPath).getName();
+				strFullPath=strServerJPOPath+strFilePathFromPackage;
 			}
 			Logger.write("Insert full file path "+strFullPath);
 			
