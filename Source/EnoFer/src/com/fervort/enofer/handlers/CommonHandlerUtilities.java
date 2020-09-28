@@ -10,6 +10,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 
 import com.fervort.enofer.log.Logger;
+import com.fervort.enofer.preferences.EnoProperties;
+import com.fervort.enofer.preferences.PropertyPreferences;
 
 public class CommonHandlerUtilities {
 
@@ -22,6 +24,12 @@ public class CommonHandlerUtilities {
 	 */
 	public static String getSourceFolderName(Object iSelected) throws JavaModelException
 	{
+		String strCustomSourceFolder = EnoProperties.getPropertyValue("SourceFolder");
+		if(strCustomSourceFolder!=null)
+		{
+			return strCustomSourceFolder.trim();
+		}
+		
 		if(SOURCE_FOLDER_NAME==null)
 		{
 			ICompilationUnit compilationUnit = (ICompilationUnit)iSelected; 
@@ -66,4 +74,19 @@ public class CommonHandlerUtilities {
 		Logger.write("After split: "+Arrays.toString(aFullFilePath));
 		return aFullFilePath[1];
 	}
+	// TODO Might need changes for remote Windows OS
+	public static String processDirPath(String strPath)
+	{
+		String strRemoteServerOS = EnoProperties.getPropertyValue("RemoteServerOS");
+		if(strRemoteServerOS!=null)
+		{
+			if(strRemoteServerOS.trim().equalsIgnoreCase("Linux"))
+			{
+				return strPath.replace("\\", "/");
+			}
+		}
+		return strPath;
+	}
+	
+	
 }

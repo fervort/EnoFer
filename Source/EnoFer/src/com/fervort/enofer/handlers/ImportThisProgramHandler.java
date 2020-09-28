@@ -111,7 +111,7 @@ public class ImportThisProgramHandler extends AbstractHandler{
 				Logger.write("File path "+strFilePathFromPackage);
 				
 				//String strFileName = new File(strFullPath).getName();
-				strFullPath=strServerJPOPath+strFilePathFromPackage;
+				strFullPath=strServerJPOPath+CommonHandlerUtilities.processDirPath(strFilePathFromPackage);
 			}
 			Logger.write("Insert full file path "+strFullPath);
 			

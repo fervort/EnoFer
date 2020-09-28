@@ -158,6 +158,12 @@
             id="com.fervort.enofer.preferencepages.settings"
             name="EnoFer Settings">
       </page>
+      <page
+            class="com.fervort.enofer.preferences.PropertyPreferences"
+            id="com.fervort.enofer.preferencepages.properties"
+            category="com.fervort.enofer.preferencepages.settings"
+            name="Properties">
+      </page>
    </extension>
 
 </plugin>
