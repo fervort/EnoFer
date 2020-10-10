@@ -27,7 +27,11 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.fervort.enofer.Activator;
 import com.fervort.enofer.enovia.EnoviaUtility;
+import com.fervort.enofer.enovia.jpo.DefaultMangling;
+import com.fervort.enofer.enovia.jpo.ManglingAbstractStrategy;
+import com.fervort.enofer.enovia.jpo.ManglingContext;
 import com.fervort.enofer.log.Logger;
+import com.fervort.enofer.preferences.EnoProperties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -69,7 +73,15 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
     					
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
-    					importAndCompileProgram(window,obFirstSelection,selectedResource.getLocation().toOSString());
+    					
+    					if(EnoProperties.getPropertyValue("IsRemoteServer").equalsIgnoreCase("true"))
+    					{
+    						importAndCompileProgramOnRemote(window, obFirstSelection, selectedResource.getLocation().toOSString());
+    					}else
+    					{
+    						importAndCompileProgram(window,obFirstSelection,selectedResource.getLocation().toOSString());
+    					}
+    					
     				}else
     				{
     					MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Wrong Selection. Select program and then click this option.\n"+obFirstSelection);
@@ -146,5 +158,40 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
 		}
 	}
 	
+	void importAndCompileProgramOnRemote(IWorkbenchWindow window,Object obFirstSelection,String strFullPath) 
+	{
+		
+		try {
+			
+			Logger.write("Insert full file path "+strFullPath);
+			
+			ManglingContext manglingContext = new ManglingContext(strFullPath);
+			
+			String jpoName =manglingContext.getJPOName();
+			String jpoNameWithPackage =manglingContext.getJPONameWithPackage(CommonHandlerUtilities.getSourceFolderName(obFirstSelection));
+			
+			String content =manglingContext.translateJPOToValidJavaClass();
+			
+			Logger.write("JPOToJava=>\n"+content);
+			
+			EnoviaUtility.executeMQL("escape modify program "+jpoNameWithPackage+" code \""+content+" \" ");
+			
+			Logger.write("File inserted ");
+			
+			EnoviaUtility.executeMQL("compile program '"+jpoNameWithPackage+"' force update");
+    		Logger.write("Program compiled ");
+			MessageDialog.openInformation(window.getShell(), "EnoFer Info", "Program inserted and compiled sucessfully !");
+				
+		} catch (Exception ex) {
+			MessageDialog.openError(window.getShell(), "EnoFer Error", ""+ex);
+			Logger.write("insert and compiled program failed "+strFullPath);
+			String message = ex.getMessage();
+			Logger.write("Exception "+message+" trace "+ex);
+			Status status = new Status(IStatus.ERROR, "com.fervort.enofer", 0, message, ex);
+			//ErrorDialog.openError(getShell(),"Failed","Couldn't export program from Enovia database", status);
+		}
+	}
 	
+	
+
 }
