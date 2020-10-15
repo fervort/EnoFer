@@ -74,7 +74,8 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
     					IResource selectedResource = (IResource)((IAdaptable)obFirstSelection).getAdapter(IResource.class);
     					//MessageDialog.openInformation(window.getShell(), "EnoFer Info","This is file "+selectedResource.getLocation());
     					
-    					if(EnoProperties.getPropertyValue("IsRemoteServer").equalsIgnoreCase("true"))
+    					String proIsRemoteServer=EnoProperties.getPropertyValue("IsRemoteServer");
+    					if(proIsRemoteServer!=null && proIsRemoteServer.equalsIgnoreCase("true"))
     					{
     						importAndCompileProgramOnRemote(window, obFirstSelection, selectedResource.getLocation().toOSString());
     					}else
@@ -169,6 +170,8 @@ public class ImportAndCompilerProgramHandler extends AbstractHandler{
 			
 			String jpoName =manglingContext.getJPOName();
 			String jpoNameWithPackage =manglingContext.getJPONameWithPackage(CommonHandlerUtilities.getSourceFolderName(obFirstSelection));
+			
+			Logger.write("jpoNameWithPackage=> "+jpoNameWithPackage);
 			
 			String content =manglingContext.translateJPOToValidJavaClass();
 			
